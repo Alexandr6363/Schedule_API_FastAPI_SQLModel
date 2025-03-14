@@ -1,34 +1,9 @@
 from datetime import datetime
-from sqlmodel import Field, Session, SQLModel, create_engine, select, TIMESTAMP, Column, text
+from sqlmodel import Session, SQLModel, create_engine, Field, Column, TIMESTAMP
+from models import *
+from data import *
 
 
-class User(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-
-    name: str = Field(index=True)
-
-
-class Farma(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-
-    name: str = Field(index=True)
-
-
-class Schedule(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-
-    farma_id: int | None = Field(default=None, foreign_key="farma.id")    
-    user_id: int | None = Field(default=None, foreign_key="user.id") 
-
-    interval_in_min: int 
-    is_constantly: bool 
-    duration_in_days: int | None
-    start_use: datetime = Field(
-        default=None,
-        sa_column=Column(
-            TIMESTAMP(timezone=True),
-            nullable=False
-        ))
     
 sqlite_file_name = "database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -40,9 +15,24 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
+
+def fill_db(list_of_data):
+    for item in list_of_data:
+        with Session(engine) as session:
+            session.add(item)
+            session.commit()
+            session.refresh(item)
+            print(item)
+
+
+def create_some_schedules():
+    pass
+
 def main():
     create_db_and_tables()
-
+    fill_db(user_list)
+    fill_db(farm_list)
+    fill_db(schedule_list)
 
 
 if __name__ == "__main__":
