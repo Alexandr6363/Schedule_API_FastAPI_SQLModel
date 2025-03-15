@@ -35,13 +35,32 @@ def get_schedules(user_id):
         for schedule in result:
             response.append(
                 schedule.id
-            #     {
-            #     "user": schedule.user,
-            #     "farma": schedule.farma,
-            #     "schedule_id": schedule.id,
-            #     "schedule_finish_date": schedule.finish_of_use(),
-            #     "schedule_list_of_use": schedule.list_of_use(),
-            #     "schedule_next_time_schdule": schedule.next_time_schedule(),
-            # }
             )
+        return response
+
+def get_list_of_use(user_id, schedule_id):
+    with Session(engine) as session:
+        statement = select(Schedule).where(Schedule.user_id == int(user_id)).where(Schedule.id == schedule_id)
+        result = session.exec(statement)
+        response = result.one_or_none()
+        if response:
+            response = response.list_of_use()
+        else:
+            response = []
+        return response
+    
+def next_taking(user_id):
+    with Session(engine) as session:
+        statement = select(Schedule).where(Schedule.user_id == int(user_id))
+        result = session.exec(statement)
+        response = []
+        for schedule in result:
+            if schedule.next_time_schedule():
+                response.append({
+                    "farma": schedule.farma.name,
+                    "schedule": schedule.next_time_schedule(),
+                }
+
+                    )
+            
         return response

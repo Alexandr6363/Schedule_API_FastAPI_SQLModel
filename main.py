@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from utils import get_schedules
+from utils import get_schedules, get_list_of_use, next_taking
 
 app = FastAPI()
 
@@ -13,12 +13,14 @@ async def schedules(user_id: int):
 
 @app.get("/schedule")
 async def schedules(user_id: int, schedule_id: int):
-    return [{"user_id": user_id, "schedule": schedule_id}]
+    result = get_list_of_use(user_id, schedule_id)
+    return result
 
 
 @app.get("/next_takings")
-async def next_taking(user_id: int):
-    return [{"user_id": user_id}]
+async def next_schedule(user_id: int):
+    result = next_taking(user_id)
+    return result
 
 
 @app.post("/schedule")
