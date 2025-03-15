@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlmodel import Session, SQLModel, create_engine, Field, Column, TIMESTAMP
-from utils import fill_db, select_schelules
+from utils import fill_db, get_schedules
 
 
     
@@ -17,8 +17,7 @@ def create_db_and_tables():
 def main():
     create_db_and_tables()
     fill_db()
-    select_schelules(1)
-    select_schelules(3)    
+
    
 
 

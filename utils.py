@@ -27,15 +27,21 @@ def fill_db():
     fill_table(schedule_list)
 
 
-def select_schelules(user_id):
+def get_schedules(user_id):
     with Session(engine) as session:
-        statement = select(User, Schedule).where(user_id == Schedule.user_id)
+        statement = select(Schedule).where(Schedule.user_id == int(user_id))
         result = session.exec(statement)
-        for user, schedule in result:
-            print(
-                schedule.id, 
-                user.name, 
-                schedule.finish_of_use(), "\n",
-                schedule.list_of_use(), "\n",
-                schedule.next_time_schedule(), "\n",
-                  )
+        response = []
+        for schedule in result:
+            response.append(
+                schedule.id
+            #     {
+            #     "user": schedule.user,
+            #     "farma": schedule.farma,
+            #     "schedule_id": schedule.id,
+            #     "schedule_finish_date": schedule.finish_of_use(),
+            #     "schedule_list_of_use": schedule.list_of_use(),
+            #     "schedule_next_time_schdule": schedule.next_time_schedule(),
+            # }
+            )
+        return response

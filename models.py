@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel, Field, Column, TIMESTAMP
+from sqlmodel import SQLModel, Field, Column, TIMESTAMP, Relationship
 from datetime import datetime, timedelta
 import math
 
@@ -7,18 +7,24 @@ class User(SQLModel, table=True):
 
     name: str = Field(index=True)
 
+    schedules: list["Schedule"] = Relationship(back_populates="user")
+
 
 class Farma(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     name: str = Field(index=True)
+    schedules: list["Schedule"] = Relationship(back_populates="farma")    
 
 
 class Schedule(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
-    farma_id: int | None = Field(default=None, foreign_key="farma.id")    
+    farma_id: int | None = Field(default=None, foreign_key="farma.id")
+    farma: Farma | None = Relationship(back_populates="schedules")
+
     user_id: int | None = Field(default=None, foreign_key="user.id") 
+    user: User | None = Relationship(back_populates="schedules")
 
     interval_in_min: int 
     is_constantly: bool 
@@ -47,7 +53,7 @@ class Schedule(SQLModel, table=True):
         dayly_schedule = []
 
         if not self.is_constantly and self.finish_of_use() <= today:
-            return []
+            return dayly_schedule
         else:
             start_time = datetime(today.year, today.month, today.day, 8, 0)
             finish_time = datetime(today.year, today.month, today.day, 22, 0)

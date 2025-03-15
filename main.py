@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from utils import get_schedules
 
 app = FastAPI()
 
@@ -6,7 +7,8 @@ app = FastAPI()
 
 @app.get("/schedules")
 async def schedules(user_id: int):
-    return [{"user_id": user_id}]
+    result = get_schedules(user_id)
+    return result
 
 
 @app.get("/schedule")
