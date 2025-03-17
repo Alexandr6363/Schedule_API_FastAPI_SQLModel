@@ -1,7 +1,7 @@
 from sqlmodel import SQLModel, Field, Column, TIMESTAMP, Relationship
 from datetime import datetime, timedelta
 import math
-from config import NEXT_TIME_HOURS
+from .config import NEXT_TIME_HOURS
 
 
 class User(SQLModel, table=True):

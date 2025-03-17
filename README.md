@@ -5,7 +5,7 @@
 
 ### 1. Создаем и запускаем витруальнное окружение:
    
-    python -m venv venv
+    python3 -m venv venv
     source venv/bin/activate
 
 ### 2. Устанавливаем зависимости:
@@ -14,7 +14,7 @@
 
 ### 3. Создаем и наполняем тестовую базу данных:
    
-    python create_and_fill_db.py
+    python3 create_and_fill_db.py
 
 ### 4. Запускаем:
    

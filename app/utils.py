@@ -1,7 +1,7 @@
-from data import user_list, farm_list, schedule_list
+from .data import user_list, farm_list, schedule_list
 from sqlmodel import Session, create_engine, SQLModel, select
-from models import User, Farma, Schedule
-from config import DATABASE_NAME
+from .models import User, Farma, Schedule
+from .config import DATABASE_NAME
 
 
 sqlite_file_name = DATABASE_NAME
