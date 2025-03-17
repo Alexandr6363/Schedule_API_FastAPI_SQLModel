@@ -1,12 +1,13 @@
 from sqlmodel import SQLModel, Field, Column, TIMESTAMP, Relationship
 from datetime import datetime, timedelta
 import math
+from config import NEXT_TIME_HOURS
+
 
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     name: str = Field(index=True)
-
     schedules: list["Schedule"] = Relationship(back_populates="user")
 
 
@@ -65,7 +66,7 @@ class Schedule(SQLModel, table=True):
     
     def next_time_schedule(self):
         start_time = datetime.today().now()
-        finish_time = start_time + timedelta(hours=1)
+        finish_time = start_time + timedelta(hours=NEXT_TIME_HOURS)
         next_time_list = []
         for element in self.list_of_use():
             if element >= start_time and element <= finish_time:

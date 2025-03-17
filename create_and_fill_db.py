@@ -16,6 +16,7 @@ def create_db_and_tables():
 def main():
     create_db_and_tables()
     fill_db()
+    
 
 
 if __name__ == "__main__":

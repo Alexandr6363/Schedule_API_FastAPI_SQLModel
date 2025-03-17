@@ -1,9 +1,10 @@
 from data import user_list, farm_list, schedule_list
 from sqlmodel import Session, create_engine, SQLModel, select
 from models import User, Farma, Schedule
+from config import DATABASE_NAME
 
 
-sqlite_file_name = "database.db"
+sqlite_file_name = DATABASE_NAME
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 engine = create_engine(sqlite_url, echo=True)
@@ -59,8 +60,29 @@ def next_taking(user_id):
                 response.append({
                     "farma": schedule.farma.name,
                     "schedule": schedule.next_time_schedule(),
-                }
-
-                    )
-            
+                })
+                            
         return response
+    
+
+def find_or_create_farma(farma_name):
+    with Session(engine) as session:
+        statement = select(Farma).where(Farma.name == farma_name)
+        result = session.exec(statement)
+        farma = result.one_or_none()
+
+        if farma:
+            return farma.id
+        else:
+            farma = Farma(name=farma_name)
+            session.add(farma)
+            session.commit()
+            return farma.id
+
+def create_new_schedule(data):
+    with Session(engine) as session:
+        new_schedule = Schedule(**data)
+        session.add(new_schedule)
+        session.commit()
+        session.refresh(new_schedule)
+        return new_schedule

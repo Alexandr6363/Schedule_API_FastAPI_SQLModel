@@ -1,0 +1,2 @@
+NEXT_TIME_HOURS = 1
+DATABASE_NAME = "database.db"
