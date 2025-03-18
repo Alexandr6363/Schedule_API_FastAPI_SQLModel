@@ -2,10 +2,7 @@ from fastapi import FastAPI
 from .utils import get_schedules, get_list_of_use, next_taking, find_or_create_farma, create_new_schedule
 from datetime import datetime
 from .create_and_fill_db import create_and_fill_db
-from pathlib import Path
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 create_and_fill_db()
