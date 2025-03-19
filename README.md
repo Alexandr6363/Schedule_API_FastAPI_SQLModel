@@ -1,4 +1,4 @@
-# Schedule_API FASTApi + SQLModel + docker-compose
+# Schedule_API FastAPI + SQLModel + docker-compose
 
 
 
