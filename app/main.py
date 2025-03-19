@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .utils import get_schedules, get_list_of_use, next_taking, find_or_create_farma, create_new_schedule
+from .utils import get_schedules, get_list_of_use, next_taking, find_or_create_farma, create_new_schedule, find_user_or_return_none
 from datetime import datetime
 from .create_and_fill_db import create_and_fill_db
 
@@ -39,10 +39,12 @@ async def create_schedule(
 
 ):
     farma_id = find_or_create_farma(farma_name)
-
+    user = find_user_or_return_none(user_id)
+    if user == None:
+        return {"Error": "Can't find user with this ID"} 
     data = {
         "farma_id": farma_id,
-        "user_id": user_id,
+        "user_id": user.id,
         "is_constantly": is_constantly,
         "interval_in_min": interval_in_min,
         "start_use": datetime.now(),

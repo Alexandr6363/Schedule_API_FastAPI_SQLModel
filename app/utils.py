@@ -86,3 +86,10 @@ def create_new_schedule(data):
         session.commit()
         session.refresh(new_schedule)
         return new_schedule
+
+def find_user_or_return_none(user_id):
+    with Session(engine) as session:
+        statement = select(User).where(User.id == user_id)    
+        result = session.exec(statement)
+        user = result.one_or_none()
+        return user
